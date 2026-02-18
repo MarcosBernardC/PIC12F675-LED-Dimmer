@@ -54,16 +54,10 @@ dkms.conf
 # debug information files
 *.dwo
 
-# LaTeX temporales
-docs/*.aux
-docs/*.fdb_latexmk
-docs/*.fls
-docs/*.log
-#docs/*.pdf
-docs/*.out
-docs/*.toc
+# LaTeX build directory
+docs/build/
 
-# XC8 Temporary files
+# XC8 Temporary files (limpieza más agresiva para src/)
 src/*.p1
 src/*.d
 src/*.cmf
@@ -75,3 +69,6 @@ src/*.rlf
 src/*.s
 src/__eeprom.*
 startup.*
+
+# Datasheet (Opcional: déjalo si quieres que sea solo local)
+12f675.pdf
