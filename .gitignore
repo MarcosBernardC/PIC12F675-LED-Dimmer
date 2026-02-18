@@ -59,6 +59,19 @@ docs/*.aux
 docs/*.fdb_latexmk
 docs/*.fls
 docs/*.log
-docs/*.pdf
+#docs/*.pdf
 docs/*.out
 docs/*.toc
+
+# XC8 Temporary files
+src/*.p1
+src/*.d
+src/*.cmf
+src/*.sdb
+src/*.sym
+src/*.lst
+src/*.hxl
+src/*.rlf
+src/*.s
+src/__eeprom.*
+startup.*
