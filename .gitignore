@@ -58,17 +58,7 @@ dkms.conf
 docs/build/
 
 # XC8 Temporary files (limpieza más agresiva para src/)
-src/*.p1
-src/*.d
-src/*.cmf
-src/*.sdb
-src/*.sym
-src/*.lst
-src/*.hxl
-src/*.rlf
-src/*.s
-src/__eeprom.*
-startup.*
+src/build/
 
 # Datasheet (Opcional: déjalo si quieres que sea solo local)
 12f675.pdf
