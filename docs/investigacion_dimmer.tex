@@ -1,0 +1,37 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{listings} % Para mostrar tu código C elegante
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\title{Implementación de Control de Potencia PWM en Microcontroladores de 8 bits}
+\author{Bernard Calixto}
+\date{Febrero 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Introducción}
+Este proyecto documenta el diseño e implementación de un dimmer para luminarias LED utilizando el microcontrolador PIC12F675. Se prioriza la optimización de recursos y el uso de herramientas Open Source en entornos Linux (Fedora).
+
+\section{Definición del Problema}
+El presente proyecto nace de la necesidad de proporcionar una iluminación dinámica y estética para un elemento ornamental sacro: una efigie de plata con arco ornamental y cintas de seda fucsia y blanca. 
+
+El desafío técnico se divide en tres vertientes:
+\begin{itemize}
+    \item \textbf{Efecto Visual:} Lograr una transición de luz suave (fading) que realce el brillo del metal y la textura de la seda sin parpadeos perceptibles.
+    \item \textbf{Eficiencia Lumínica:} Optimizar la posición de los emisores para evitar la pérdida de intensidad por atenuación, descartando la iluminación posterior en favor de un enfoque frontal o lateral que resalte el relieve de la plata.
+    \item \textbf{Restricción de Hardware:} Implementar el control en un microcontrolador de dimensiones reducidas (PIC12F675) para que el circuito sea discreto y transportable durante las procesiones.
+\end{itemize}
+
+\section{Cronograma de Desarrollo}
+\begin{itemize}
+    \item \textbf{Fase 1:} Validación de hardware (Blink LED).
+    \item \textbf{Fase 2:} Implementación de ADC para control analógico.
+    \item \textbf{Fase 3:} Generación de señal PWM y pruebas de carga.
+\end{itemize}
+
+\end{document}
