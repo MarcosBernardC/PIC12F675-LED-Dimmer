@@ -1,66 +1,89 @@
 #include <xc.h>
 
 // ---------------------------------------------------------------------------
-// Configuración del PIC12F675
+// CONFIG — PIC12F675, fuses completos
 // ---------------------------------------------------------------------------
-#pragma config FOSC = INTRCIO   // Oscilador interno 4MHz
-#pragma config WDTE = OFF       // Watchdog apagado
-#pragma config PWRTE = ON       // Power-up Timer
-#pragma config MCLRE = OFF      // GP3 como entrada general
+#pragma config FOSC  = INTRCIO  // Oscilador interno, GP4/GP5 como I/O
+#pragma config WDTE  = OFF      // Watchdog Timer desactivado
+#pragma config PWRTE = ON       // Power-up Timer activado
+#pragma config MCLRE = OFF      // GP3 como entrada digital (no reset)
+#pragma config BOREN = ON       // Brown-out Reset activado
+#pragma config CP    = OFF      // Sin protección de código
+#pragma config CPD   = OFF      // Sin protección de datos EEPROM
 
-#define _XTAL_FREQ 4000000
+#define _XTAL_FREQ 4000000UL
 
 // ---------------------------------------------------------------------------
 // Parámetros del efecto
 // ---------------------------------------------------------------------------
-#define PWM_STEPS       100     // Resolución del PWM (pasos de 0 a 100)
-#define T0_RELOAD       156     // Timer0: recarga para tick de 200µs → PWM 50Hz
-#define T1_RELOAD_H     0xF8    // Timer1 HIGH: recarga para paso de fade cada 15ms
-#define T1_RELOAD_L     0xED    // Timer1 LOW
+#define PWM_STEPS   100     // Resolución PWM (0–100)
+#define T0_RELOAD   156     // Timer0: tick de 200µs → PWM 50Hz @ 4MHz, prescaler 1:2
+#define T1_RELOAD_H 0xF8    // Timer1: tick de 15ms @ 4MHz, prescaler 1:8
+#define T1_RELOAD_L 0xED    // Ciclo base: ~3s | Ciclo arco: ~6s (divisor 2)
+#define ARCO_DIV    2       // Arco avanza 1 paso cada 2 ticks de T1 (~6s ciclo)
 
 // ---------------------------------------------------------------------------
-// Variables compartidas entre ISR y main
+// Variables compartidas ISR ↔ main
 // ---------------------------------------------------------------------------
-volatile unsigned char brillo  = 0;   // Nivel actual (0–100), modificado por T1
-volatile signed char   paso    = 1;   // Dirección del fade: +1 sube, -1 baja
+
+// Base (GP0/GP1) — fade 3s
+volatile unsigned char brillo_base = 0;
+volatile signed char   paso_base   = 1;
+
+// Arco (GP2/GP4) — fade 6s, arranca en contrafase con base
+volatile unsigned char brillo_arco = PWM_STEPS;
+volatile signed char   paso_arco   = -1;
 
 // ---------------------------------------------------------------------------
-// ISR — Manejador de interrupciones
+// ISR
 // ---------------------------------------------------------------------------
 void __interrupt() isr(void) {
 
-    // --- Timer0: tick de PWM ---
-    // Se dispara cada 200µs. Genera la señal PWM en GP0/GP1 en contrafase.
+    // --- Timer0: PWM tick (200µs) ---
     if(INTCONbits.T0IF) {
-        static unsigned char pwm_cnt = 0;
+        static unsigned char cnt = 0;
 
-        GP0 = (pwm_cnt < brillo)               ? 1 : 0;  // Semicírculo A
-        GP1 = (pwm_cnt < (PWM_STEPS - brillo)) ? 1 : 0;  // Semicírculo B (contrafase)
+        // Base: GP0 y GP1 en contrafase
+        GP0 = (cnt < brillo_base)               ? 1 : 0;
+        GP1 = (cnt < (PWM_STEPS - brillo_base)) ? 1 : 0;
 
-        if(++pwm_cnt >= PWM_STEPS) pwm_cnt = 0;
+        // Arco: GP2 y GP4 en contrafase entre sí
+        GP2 = (cnt < brillo_arco)               ? 1 : 0;
+        GP4 = (cnt < (PWM_STEPS - brillo_arco)) ? 1 : 0;
 
-        // Recarga manual del Timer0
+        if(++cnt >= PWM_STEPS) cnt = 0;
+
         TMR0 = T0_RELOAD;
-        INTCONbits.T0IF = 0;    // Limpia bandera
+        INTCONbits.T0IF = 0;
     }
 
-    // --- Timer1: tick de fade ---
-    // Se dispara cada 15ms. Avanza un paso en la rampa de brillo.
+    // --- Timer1: fade tick (15ms) ---
     if(PIR1bits.TMR1IF) {
 
-        // Verificamos límites ANTES de sumar para evitar desborde en unsigned
-        if(paso > 0 && brillo >= PWM_STEPS) {
-            paso = -1;
-        } else if(paso < 0 && brillo == 0) {
-            paso = 1;
+        // -- Fade base (cada tick de 15ms → ciclo ~3s) --
+        if(paso_base > 0 && brillo_base >= PWM_STEPS) {
+            paso_base = -1;
+        } else if(paso_base < 0 && brillo_base == 0) {
+            paso_base = 1;
+        }
+        brillo_base += paso_base;
+
+        // -- Fade arco (cada 2 ticks → ciclo ~6s) --
+        static unsigned char arco_cnt = 0;
+        if(++arco_cnt >= ARCO_DIV) {
+            arco_cnt = 0;
+
+            if(paso_arco > 0 && brillo_arco >= PWM_STEPS) {
+                paso_arco = -1;
+            } else if(paso_arco < 0 && brillo_arco == 0) {
+                paso_arco = 1;
+            }
+            brillo_arco += paso_arco;
         }
 
-        brillo += paso;
-
-        // Recarga del Timer1
         TMR1H = T1_RELOAD_H;
         TMR1L = T1_RELOAD_L;
-        PIR1bits.TMR1IF = 0;    // Limpia bandera
+        PIR1bits.TMR1IF = 0;
     }
 }
 
@@ -69,31 +92,26 @@ void __interrupt() isr(void) {
 // ---------------------------------------------------------------------------
 void main(void) {
 
-    // Periféricos
-    ANSEL  = 0x00;      // Todo digital
-    CMCON  = 0x07;      // Comparadores apagados
-    TRISIO = 0x00;      // Todos los pines como salida
-    GPIO   = 0x00;      // Apagado inicial
+    ANSEL  = 0x00;          // Todo digital
+    CMCON  = 0x07;          // Comparadores apagados
+    TRISIO = 0x00;          // Todos los pines como salida
+    GPIO   = 0x00;          // Apagado inicial
 
-    // --- Configuración Timer0 ---
-    // Fuente: reloj interno, preescaler 1:2 asignado a TMR0
-    OPTION_REG = 0b00000000;  // T0CS=0 (interno), PSA=0 (a TMR0), PS=000 (1:2)
+    // Timer0 — preescaler 1:2, fuente interna
+    OPTION_REG = 0b00000000;
     TMR0 = T0_RELOAD;
-    INTCONbits.T0IE = 1;      // Habilita interrupción Timer0
+    INTCONbits.T0IE = 1;
 
-    // --- Configuración Timer1 ---
-    // Preescaler 1:8, fuente interna
-    T1CON = 0b00110001;       // TMR1ON=1, T1CKPS=11 (1:8), TMR1CS=0 (interno)
+    // Timer1 — preescaler 1:8, fuente interna
+    T1CON = 0b00110001;
     TMR1H = T1_RELOAD_H;
     TMR1L = T1_RELOAD_L;
-    PIE1bits.TMR1IE  = 1;     // Habilita interrupción Timer1
-    INTCONbits.PEIE  = 1;     // Habilita interrupciones de periféricos
+    PIE1bits.TMR1IE = 1;
+    INTCONbits.PEIE = 1;
 
-    // --- Interrupciones globales ON ---
-    INTCONbits.GIE = 1;
+    INTCONbits.GIE  = 1;
 
-    // Main loop vacío: todo ocurre en la ISR
     while(1) {
-        // Aquí vivirá la lógica futura (arco, virgen, modo, etc.)
+        // Virgen (GP5) — próximo paso
     }
 }
