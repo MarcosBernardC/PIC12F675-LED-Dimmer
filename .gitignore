@@ -65,3 +65,17 @@ src/build/
 
 # VideoEdit
 VideoEdit/
+
+# KiCad - Archivos temporales y de backup
+hw/*.kicad_prl
+hw/*.kicad_pcb-bak
+hw/*.kicad_sch-bak
+hw/*.bak
+hw/_autosave-*
+hw/fp-info-cache
+hw/fp-lib-table
+hw/sym-lib-table
+
+# KiCad - Directorios de salida (opcional pero recomendado)
+hw/plots/
+hw/gerbers/
