@@ -79,3 +79,7 @@ hw/sym-lib-table
 # KiCad - Directorios de salida (opcional pero recomendado)
 hw/plots/
 hw/gerbers/
+
+*.kicad_prl
+*-backups/
+fp-info-cache
