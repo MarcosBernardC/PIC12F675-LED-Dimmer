@@ -39,7 +39,7 @@ El núcleo del sistema está escrito en **C** y optimizado para el PIC12F675 uti
     * Gestión de 5 canales de salida mediante conmutación rápida.
     * Configuración de registros internos (Oscilador, GPIO, Timers).
 
-* **Código Fuente:** [src/main.c](./src/main.c)
+* **Código Fuente:** <a href="https://raw.githubusercontent.com/MarcosBernardC/PIC12F675-LED-Dimmer/main/src/main.c" target="_blank">📄 main.c (Vista Raw)</a>
 
 ---
 
