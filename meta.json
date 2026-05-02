@@ -1,0 +1,22 @@
+{
+      "id": "08",
+      "title": "PIC12F675 LED Dimmer",
+      "category": "Power Electronics",
+      "visibility": "PUBLIC",
+      "domain": ["HARD", "EMB"],
+      "status": {
+        "state": "ARCHIVE",
+        "label": "Stable-HW"
+      },
+      "environment": {
+        "os": "Fedora 43",
+        "shell": "fish",
+        "last_update": "2026-05-02 // 15:38 PET"
+      },
+      "links": {
+        "ssh": "git@github.com:MarcosBernardC/pic12f675-led-dimmer.git",
+        "https": "https://github.com/MarcosBernardC/pic12f675-led-dimmer"
+      },
+      "stack": ["C", "KiCad", "XC8", "MPLAB X", "LaTeX"],
+      "description": "Controlador de intensidad lumínica basado en microcontrolador de 8 bits con investigación técnica documentada."
+}

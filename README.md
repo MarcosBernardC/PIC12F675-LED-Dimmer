@@ -23,8 +23,7 @@ Controlador de intensidad (Dimmer) de 5 canales para tiras LED de 12V, basado en
 * **Eficiencia:** Integración de regulador Buck LM2596 para reducir de 12V a 5V sin generar calor excesivo.
 
 ### 📂 Documentación de Hardware
-Para una revisión detallada de las conexiones y el diseño electrónico, puedes consultar el diagrama técnico:
-* 📄 [Ver Esquemático (PDF)](./hardware/pic12f675-led-dimmer/pic12f675-led-dimmer.pdf)
+Para una revisión detallada de las conexiones, consulta el [📄 diagrama técnico (PDF)](https://raw.githubusercontent.com/MarcosBernardC/PIC12F675-LED-Dimmer/main/hardware/pic12f675-led-dimmer/pic12f675-led-dimmer.pdf).
 
 ---
 
@@ -32,9 +31,11 @@ Para una revisión detallada de las conexiones y el diseño electrónico, puedes
 El núcleo del sistema está escrito en **C** y optimizado para el PIC12F675 utilizando el compilador **XC8**.
 
 * **Arquitectura:** Basada en interrupciones para una gestión eficiente del PWM.
-* **Módulos clave:** * Gestión de 5 canales de salida mediante conmutación rápida.
+* **Módulos clave:**  
+    * Gestión de 5 canales de salida mediante conmutación rápida.
     * Configuración de registros internos (Oscilador, GPIO, Timers).
-* **Código Fuente:** [Ver src/main.c](./src/main.c)
+
+* **Código Fuente:** [src/main.c](./src/main.c)
 
 ---
 
@@ -74,4 +75,4 @@ Este proyecto fue desarrollado íntegramente por **Marcos Bernard Calixto**.
 * **Copyright:** © 2026 - No License Granted - All Rights Reserved.
 
 ---
-*© 2026 MB
+© 2026 MB
