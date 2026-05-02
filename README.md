@@ -4,7 +4,7 @@
 ![Hardware](https://img.shields.io/badge/Hardware-KiCad-blue)
 ![Firmware](https://img.shields.io/badge/Firmware-C%20(XC8)-green)
 
-> **Nota:** Este proyecto ha sido migrado al **LEGACY ARCHIVE**. Representa una base estable de control de potencia y gestión de recursos limitados en sistemas embebidos.
+> **Nota:** Este proyecto ha sido migrado al **ARCHIVE**. Representa una base estable de control de potencia y gestión de recursos limitados en sistemas embebidos.
 
 ## 🚧 Avance Actual: Diseño de PCB y Modelado 3D
 Actualmente, he finalizado el esquema lógico y la disposición de componentes principales. El siguiente paso es la integración de un módulo Buck Step-Down personalizado (LM2596) modelado en FreeCAD para mejorar la eficiencia térmica.
@@ -72,7 +72,6 @@ El sistema ha sido validado físicamente con los siguientes resultados:
 ## 📜 Licencia y Autoría
 Este proyecto fue desarrollado íntegramente por **Marcos Bernard Calixto**.
 * **Copyright:** © 2026 - No License Granted - All Rights Reserved.
-* **Obligación Académica:** Este repositorio sirve como evidencia de progresión técnica para el ecosistema **DomoNode**.
 
 ---
 *© 2026 MB
