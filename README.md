@@ -1,4 +1,4 @@
-# PIC12F675 LED Dimmer - Bernardperulabs
+# PIC12F675 LED Dimmer
 
 ![Estado del Proyecto](https://img.shields.io/badge/Estado-Finalizado-green)
 ![Hardware](https://img.shields.io/badge/Hardware-KiCad-blue)
@@ -75,4 +75,4 @@ Este proyecto fue desarrollado íntegramente por **Marcos Bernard Calixto**.
 * **Obligación Académica:** Este repositorio sirve como evidencia de progresión técnica para el ecosistema **DomoNode**.
 
 ---
-*© 2026 MB // BERNARDLAB.DEV*
+*© 2026 MB
