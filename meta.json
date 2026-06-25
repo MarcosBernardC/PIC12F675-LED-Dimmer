@@ -1,22 +1,46 @@
 {
-      "id": "08",
-      "title": "PIC12F675 LED Dimmer",
-      "category": "Power Electronics",
-      "visibility": "PUBLIC",
-      "domain": ["HARD", "EMB"],
-      "status": {
-        "state": "ARCHIVE",
-        "label": "Stable-HW"
+  "id": "08",
+  "title": "PIC12F675 LED Dimmer",
+  "category": "Power Electronics",
+  "visibility": "PUBLIC",
+  "tags": "ELECTRONICS",
+  "domain": ["Embedded Systems", "Hardware Design"],
+  "status": {
+    "activity": "COMPLETED",
+    "maturity": "STABLE",
+    "version": "0.1.0",
+    "progress_pct": 100,
+    "scopes": {
+      "Firmware": {
+        "status": "STABLE",
+        "progress": 100
       },
-      "environment": {
-        "os": "Fedora 43",
-        "shell": "fish",
-        "last_update": "2026-05-02 // 15:38 PET"
+      "Hardware_EDA": {
+        "status": "STABLE",
+        "progress": 100
       },
-      "links": {
-        "ssh": "git@github.com:MarcosBernardC/pic12f675-led-dimmer.git",
-        "https": "https://github.com/MarcosBernardC/pic12f675-led-dimmer"
+      "Simulation": {
+        "status": "STABLE",
+        "progress": 100
       },
-      "stack": ["C", "KiCad", "XC8", "MPLAB X", "LaTeX"],
-      "description": "Controlador de intensidad lumínica basado en microcontrolador de 8 bits con investigación técnica documentada."
+      "Documentation": {
+        "status": "STABLE",
+        "progress": 100
+      }
+    }
+  },
+  "environment": {
+    "os": "Fedora 43",
+    "shell": "fish"
+  },
+  "repository": {
+    "ssh": "git@github.com:MarcosBernardC/pic12f675-led-dimmer.git",
+    "https": "https://github.com/MarcosBernardC/pic12f675-led-dimmer"
+  },
+  "stack": [
+    "C",
+    "KiCad",
+    "LaTeX"
+  ],
+  "description": "Controlador de intensidad lumínica."
 }
